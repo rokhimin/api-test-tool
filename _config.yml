@@ -1,9 +1,9 @@
 title: API Test Tool
 email: whdzera@gmail.com
-baseurl: ""
+baseurl: "/api-test-tool"
 url: "" 
 twitter_username: whdzera
 github_username:  rokhimin/api-test-tool
 
 permalink: /:title.rb
-files: ""
+files: "/api-test-tool"
