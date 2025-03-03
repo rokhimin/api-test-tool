@@ -1,0 +1,221 @@
+---
+layout: default
+---
+
+<section class="section">
+    <div class="container">
+        <div class="header-container">
+            <div>
+                <h1 class="title is-2">API Test Tool</h1>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="tabs">
+                    <ul>
+                        <li class="is-active" data-tab="rest-tab"><a><span class="icon"><i class="fas fa-globe"></i></span> REST API</a></li>
+                        <li data-tab="soap-tab"><a><span class="icon"><i class="fas fa-envelope"></i></span> SOAP API</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- REST API Tab Content -->
+            <div id="rest-tab" class="tab-content is-active">
+                <div class="field">
+                    <label class="label">URL Endpoint</label>
+                    <div class="control has-icons-left">
+                        <input id="rest-url" class="input" type="text" placeholder="https://api.example.com/v1/resources">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-link"></i>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <label class="label">Use CORS Proxy</label>
+                    <div class="radio-container">
+                        <label class="custom-radio">
+                            <input type="radio" name="proxy" value="yes">
+                            <span class="radio-indicator"></span>
+                            Yes
+                        </label>
+                        <label class="custom-radio">
+                            <input type="radio" name="proxy" value="no" checked>
+                            <span class="radio-indicator"></span>
+                            No
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <label class="label">Method</label>
+                    <div class="method-buttons">
+                        <div class="method-btn is-active" data-method="GET">GET</div>
+                        <div class="method-btn" data-method="POST">POST</div>
+                        <div class="method-btn" data-method="PUT">PUT</div>
+                        <div class="method-btn" data-method="DELETE">DELETE</div>
+                        <div class="method-btn" data-method="PATCH">PATCH</div>
+                    </div>
+                    <input type="hidden" id="rest-method" value="GET">
+                </div>
+                
+                <div class="field" id="rest-body-container" style="display: none;">
+                    <label class="label">Request Body (JSON)</label>
+                    <div class="control">
+                        <textarea id="rest-body" class="textarea" rows="6" placeholder='{"key": "value"}'></textarea>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <label class="label">Headers</label>
+                    <div id="headers-container">
+                        <div class="columns mb-2">
+                            <div class="column is-5">
+                                <input class="input header-key" type="text" placeholder="Content-Type">
+                            </div>
+                            <div class="column is-6">
+                                <input class="input header-value" type="text" placeholder="application/json">
+                            </div>
+                            <div class="column is-1">
+                                <button class="button is-ghost remove-header">
+                                    <span class="icon">
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="add-header" class="button is-small is-outlined mt-2">
+                        <span class="icon">
+                            <i class="fas fa-plus"></i>
+                        </span>
+                        <span>Add Header</span>
+                    </button>
+                </div>
+                
+                <div class="field">
+                    <div class="control">
+                        <button id="test-rest" class="button">
+                            <span class="icon">
+                                <i class="fas fa-paper-plane"></i>
+                            </span>
+                            <span>Send Request</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="rest-loading" class="loading">
+                    <div class="spinner"></div>
+                    <p class="mt-2">Sending request...</p>
+                </div>
+                
+                <div id="rest-result" class="response-container" style="display:none">
+                    <div class="is-flex is-justify-content-space-between is-align-items-center mb-3">
+                        <h3 class="title is-5 mb-0">Response</h3>
+                        <div>
+                            <span id="rest-status"></span>
+                            <span id="rest-status-pill" class="status-pill"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="notification">
+                        <div class="is-flex is-justify-content-space-between is-align-items-center">
+                            <div>
+                                <strong>Execution Time:</strong> <span id="rest-time"></span> ms
+                            </div>
+                            <button id="copy-rest-response" class="button is-small is-outlined">
+                                <span class="icon">
+                                    <i class="fas fa-copy"></i>
+                                </span>
+                                <span>Copy</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <pre id="rest-response"></pre>
+                </div>
+            </div>
+            
+            <!-- SOAP API Tab Content -->
+            <div id="soap-tab" class="tab-content">
+                <div class="field">
+                    <label class="label">SOAP Endpoint</label>
+                    <div class="control has-icons-left">
+                        <input id="soap-url" class="input" type="text" placeholder="https://example.com/soap-service">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-link"></i>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <label class="label">SOAP Action</label>
+                    <div class="control has-icons-left">
+                        <input id="soap-action" class="input" type="text" placeholder="http://example.com/soap/action">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-tag"></i>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <label class="label">SOAP Request XML</label>
+                    <div class="control">
+                        <textarea id="soap-body" class="textarea" rows="10" placeholder='<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+<soap:Header></soap:Header>
+<soap:Body>
+<YourRequest>
+  <Parameter>Value</Parameter>
+</YourRequest>
+</soap:Body>
+</soap:Envelope>'></textarea>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <div class="control">
+                        <button id="test-soap" class="button">
+                            <span class="icon">
+                                <i class="fas fa-paper-plane"></i>
+                            </span>
+                            <span>Send Request</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="soap-loading" class="loading">
+                    <div class="spinner"></div>
+                    <p class="mt-2">Sending request...</p>
+                </div>
+                
+                <div id="soap-result" class="response-container" style="display:none">
+                    <div class="is-flex is-justify-content-space-between is-align-items-center mb-3">
+                        <h3 class="title is-5 mb-0">Response</h3>
+                        <div>
+                            <span id="soap-status"></span>
+                            <span id="soap-status-pill" class="status-pill"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="notification">
+                        <div class="is-flex is-justify-content-space-between is-align-items-center">
+                            <div>
+                                <strong>Execution Time:</strong> <span id="soap-time"></span> ms
+                            </div>
+                            <button id="copy-soap-response" class="button is-small is-outlined">
+                                <span class="icon">
+                                    <i class="fas fa-copy"></i>
+                                </span>
+                                <span>Copy</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <pre id="soap-response"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="{{ site.files }}/assets/api_test.js"></script>
